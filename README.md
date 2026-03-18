@@ -1,7 +1,6 @@
-<div align="center">
-  <h1>🌍 LocalLens AI – WhatsApp Nearby Business Finder</h1>
-  <p><b>A production-ready conversational AI orchestrator built on WhatsApp.</b></p>
-</div>
+# 🌍 LocalLens AI
+
+**A production-ready conversational AI orchestrator built on WhatsApp.**
 
 ---
 
@@ -27,13 +26,11 @@ This repository contains the full scaffolding required to deploy the startup MVP
 
 > 💡 **Deep Dive**: To understand how data flows across the Meta Graph API into n8n and down to Supabase, check out our [Architecture Overview](ARCHITECTURE.md).
 
-## 🚀 Quickstart Guide
+## 🚀 Quickstart
 
-1. **Spin up your DB Engine**: Execute `database/supabase_schema.sql` in your PostgreSQL or Supabase environment.
-2. **Configure WhatsApp**: Follow our [Meta App blueprint guide](docs/whatsapp_api_setup.md) to generate your permanent Access tokens.
-3. **Deploy the Orchestrator**: Ensure you have a running instance of n8n. Import the JSON blueprints located in `n8n-workflows/`.
-4. **Environment Variables**: Hook your Google Maps API Key and OpenAI Keys directly into the credential blocks within the n8n UI, or inject them into the `.env` of the [API wrapper](api/.env.example).
-5. **Start Texting**: Drop a pin to your WhatsApp bot number and ask for the nearest, highly-rated coffee shop!
+1. **Database Initialization**: Execute `database/supabase_schema.sql`.
+2. **Infrastructure**: Import the JSON blueprints located in `n8n-workflows/` into your n8n instance.
+3. **Environment**: Supply your Google Maps API Key and OpenAI Keys directly into the credential blocks within n8n, or inject them into the `.env` of the [API wrapper](api/.env.example).
 
 ## 🛣️ Roadmap & Future Horizons
 
