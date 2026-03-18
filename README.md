@@ -1,9 +1,4 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/Status-Active-success.svg?style=flat-square" alt="Status" />
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License" />
-  <img src="https://img.shields.io/badge/n8n-Workflow-orange.svg?style=flat-square" alt="n8n" />
-  <img src="https://img.shields.io/badge/OpenAI-GPT--4o-black.svg?style=flat-square" alt="OpenAI" />
-  <br/>
   <h1>🌍 LocalLens AI – WhatsApp Nearby Business Finder</h1>
   <p><b>A production-ready conversational AI orchestrator built on WhatsApp.</b></p>
 </div>
