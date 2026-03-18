@@ -1,8 +1,26 @@
 {
-  "name": "local-lens-api-wrapper",
+  "name": "local-lens-api",
   "version": "1.0.0",
-  "description": "Optional Express backend for custom webhook processing before n8n",
+  "description": "Express API gateway for LocalLens AI - webhook pre-validation and request shaping",
   "main": "server.js",
+  "author": {
+    "name": "Logesh Kannan",
+    "url": "https://github.com/logeshkannan19"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/logeshkannan19/LocalLens"
+  },
+  "keywords": [
+    "whatsapp",
+    "chatbot",
+    "ai",
+    "local-discovery",
+    "google-places",
+    "n8n",
+    "webhook",
+    "express"
+  ],
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
@@ -14,5 +32,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
 }

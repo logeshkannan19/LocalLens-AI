@@ -1,48 +1,191 @@
 # 🌍 LocalLens AI
 
-**A production-ready conversational AI orchestrator built on WhatsApp.**
+![LocalLens Banner](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200)
 
----
+> A production-ready conversational AI orchestrator for local business discovery via WhatsApp.
 
-**LocalLens AI** is an advanced WhatsApp assistant designed to revolutionize local business discovery. Rather than navigating clunky map interfaces, users intuitively drop a pin or text queries like *"Find gyms near me open now"* directly in WhatsApp. Powered by **OpenAI**, **Google Places**, and **n8n**, LocalLens extracts geo-intent, fetches real-time business data, and delivers perfectly formatted, highly personalized recommendations back to the chat.
+[![Node.js](https://img.shields.io/badge/Node.js-20-green?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.19-gray?style=flat-square&logo=express)](https://expressjs.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-## 🎯 Core Capabilities
+## 🚀 Overview
 
-- 🤖 **Semantic Intent Extraction**: Instantly understands location, budget, distance, and categories from unstructured WhatsApp texts or voice notes.
-- 📍 **Live Google Places Data**: Deep integration with the Google Maps API ensures users only see businesses that are actually open and highly rated right now.
-- 🧠 **Contextual AI Ranking**: GPT-4o acts as a human concierge, reading the raw Google Maps JSON and writing personalized 1-sentence pitches for the Top 3 results.
-- 💬 **WhatsApp Cloud Native**: Deployed natively over Meta's Cloud API utilizing rich interactions (buttons, maps deep links) for a pristine UI/UX.
-- ⚡ **Asynchronous Automation**: Entirely event-driven using n8n for sub-3-second end-to-end response pipelines.
+LocalLens AI is an advanced WhatsApp assistant designed to revolutionize local business discovery. Users can drop a pin or text queries like *"Find gyms near me open now"* directly in WhatsApp. Powered by **OpenAI**, **Google Places**, and **n8n**, LocalLens extracts geo-intent, fetches real-time business data, and delivers perfectly formatted, personalized recommendations.
 
-## ⚙️ Architecture & Repositories
+## ✨ Features
 
-This repository contains the full scaffolding required to deploy the startup MVP:
+| Feature | Description |
+|---------|-------------|
+| 🤖 **Semantic Intent Extraction** | Understands location, budget, distance, and categories from unstructured text |
+| 📍 **Live Google Places Data** | Real-time business data with current hours and ratings |
+| 🧠 **AI-Powered Ranking** | GPT-4o generates personalized 1-sentence pitches for top results |
+| 💬 **WhatsApp Cloud Native** | Rich interactions with buttons and map deep links |
+| ⚡ **Asynchronous Automation** | Event-driven architecture with sub-3-second responses |
+| 🔒 **Secure Webhooks** | Protected gateway for request validation and shaping |
 
-- 📂 `n8n-workflows/`: The crown jewel — exportable JSON files of the core search and follow-up engines.
-- 📂 `database/`: Supabase PostgreSQL schemas handling state, user preferences, and history.
-- 📂 `prompts/`: Curated, strictly-formatted OpenAI system instructions mapping unstructured language to intent objects.
-- 📂 `api/`: An optional Node.js/Express gateway for custom webhook pre-validation and request shaping.
-- 📂 `docs/`: Comprehensive integration blueprints (WhatsApp, Maps, n8n deployment).
+## 🏗️ Architecture
 
-> 💡 **Deep Dive**: To understand how data flows across the Meta Graph API into n8n and down to Supabase, check out our [Architecture Overview](ARCHITECTURE.md).
+```
+LocalLens/
+├── api/                    # Express gateway for webhook pre-validation
+│   ├── server.js         # Main Express server
+│   ├── package.json      # Node.js dependencies
+│   └── .env.example     # Environment template
+├── database/              # Supabase PostgreSQL schemas
+├── n8n-workflows/        # Automation workflow JSON exports
+├── prompts/               # OpenAI system instructions
+├── docs/                  # Integration blueprints
+├── ARCHITECTURE.md        # System flow documentation
+├── ROADMAP.md            # Future feature roadmap
+└── CONTRIBUTING.md       # Contribution guidelines
+```
 
-## 🚀 Quickstart
+## 🛠️ Tech Stack
 
-1. **Database Initialization**: Execute `database/supabase_schema.sql`.
-2. **Infrastructure**: Import the JSON blueprints located in `n8n-workflows/` into your n8n instance.
-3. **Environment**: Supply your Google Maps API Key and OpenAI Keys directly into the credential blocks within n8n, or inject them into the `.env` of the [API wrapper](api/.env.example).
+| Category | Technology | Purpose |
+|----------|------------|---------|
+| **API Gateway** | Express.js | Webhook processing |
+| **Automation** | n8n | Workflow orchestration |
+| **Database** | Supabase | PostgreSQL, Auth, RLS |
+| **AI** | OpenAI GPT-4o | Intent extraction, responses |
+| **Maps** | Google Places API | Business data |
+| **Messaging** | WhatsApp Cloud API | User communication |
 
-## 🛣️ Roadmap & Future Horizons
+## 🚀 Getting Started
 
-We are scaling LocalLens AI from an MVP utility into an enterprise SaaS directory. View our full roadmap, including automated geo-caching, Stripe monetization loops, and Whisper-powered voice queries in the [Roadmap Document](ROADMAP.md).
+### Prerequisites
 
-## 🤝 Open Source & Contributions
+- Node.js 18+
+- n8n instance
+- Supabase account
+- Google Places API key
+- OpenAI API key
+- WhatsApp Business account
 
-We actively welcome contributions to standardize prompts or optimize the n8n json pipelines. Please refer to our [Contributing Guidelines](CONTRIBUTING.md) before submitting a Pull Request.
+### Installation
 
----
+```bash
+# Clone the repository
+git clone https://github.com/logeshkannan19/LocalLens.git
+cd LocalLens
 
-<p align="center">
-  Released under the <a href="LICENSE">MIT License</a>.<br>
-  Built with ❤️ by Logesh Kannan.
-</p>
+# Setup API gateway
+cd api
+npm install
+
+# Copy environment file
+cp .env.example .env
+
+# Start development server
+npm run dev
+
+# Or start production server
+npm start
+```
+
+### Database Setup
+
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Execute the schema from `database/supabase_schema.sql`
+3. Configure your credentials
+
+### n8n Workflows
+
+Import the JSON files from `n8n-workflows/` into your n8n instance:
+
+- `search-workflow.json` - Main search engine
+- `followup-workflow.json` - Follow-up response handling
+
+### WhatsApp Webhook Configuration
+
+Set your webhook URL to:
+```
+https://your-domain.com/webhook
+```
+
+## 📁 Project Structure
+
+### API Gateway (`/api`)
+
+The Express gateway provides:
+- Webhook verification (Meta challenge)
+- Request validation and sanitization
+- Rate limiting hooks
+- Payload pre-processing
+- Forwarding to n8n
+
+### Database (`/database`)
+
+- User preferences storage
+- Search history
+- Business favorites
+- Session management
+
+### Automation (`/n8n-workflows`)
+
+- Intent extraction from WhatsApp messages
+- Google Places API integration
+- OpenAI GPT-4o response generation
+- WhatsApp message delivery
+
+## 🔐 Environment Variables
+
+| Variable | Description | Required |
+|---------|-------------|----------|
+| `PORT` | Server port (default: 3000) | No |
+| `VERIFY_TOKEN` | WhatsApp webhook verify token | Yes |
+| `N8N_WEBHOOK_URL` | n8n webhook endpoint | Yes |
+| `GOOGLE_MAPS_API_KEY` | Google Places API key | Yes |
+| `OPENAI_API_KEY` | OpenAI API key | Yes |
+
+## 🌐 API Reference
+
+### GET /webhook
+
+WhatsApp webhook verification endpoint.
+
+**Query Parameters:**
+- `hub.mode` - Subscription mode
+- `hub.verify_token` - Verification token
+- `hub.challenge` - Challenge string
+
+### POST /webhook
+
+WhatsApp message ingestion endpoint.
+
+**Request Body:** WhatsApp Cloud API payload
+
+**Response:** `EVENT_RECEIVED` on success
+
+## 🔮 Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for upcoming features:
+
+- [ ] Voice note support with Whisper AI
+- [ ] Stripe monetization integration
+- [ ] Geo-caching for faster responses
+- [ ] Business owner dashboard
+- [ ] Review management
+- [ ] Multi-language support
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting PRs.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Meta](https://developers.facebook.com/) - WhatsApp Cloud API
+- [Google](https://developers.google.com/maps) - Google Places API
+- [OpenAI](https://openai.com/) - GPT-4o
+- [Supabase](https://supabase.com/) - Database
+- [n8n](https://n8n.io/) - Workflow automation
