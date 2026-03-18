@@ -1,0 +1,171 @@
+{
+  "name": "LocalLens AI - Main Search Flow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp",
+        "options": {}
+      },
+      "name": "Webhook (WhatsApp)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "={{ $json.body.entry[0].changes[0].value.messages[0].text.body }}"
+            }
+          ]
+        },
+        "systemMessage": "You are an expert AI assistant that parses natural language messages from WhatsApp users seeking local businesses..."
+      },
+      "name": "OpenAI (Intent Extraction)",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://places.googleapis.com/v1/places:searchNearby",
+        "method": "POST",
+        "authentication": "headerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "includedTypes",
+              "value": "={{ $json.extracted_intent.category }}"
+            },
+            {
+              "name": "locationRestriction",
+              "value": "={{ $json.location_circle }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Google Places API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "={{ $json.results }}"
+            }
+          ]
+        },
+        "systemMessage": "Select the Top 3 best options that perfectly match the user's criteria..."
+      },
+      "name": "OpenAI (Ranking)",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v19.0/{{YOUR_PHONE_NUMBER_ID}}/messages",
+        "method": "POST",
+        "authentication": "headerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $node['Webhook (WhatsApp)'].json.body.entry[0].changes[0].value.messages[0].from }}"
+            },
+            {
+              "name": "type",
+              "value": "text"
+            },
+            {
+              "name": "text.body",
+              "value": "={{ $json.ai_ranked_message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Send WhatsApp Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1050,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook (WhatsApp)": {
+      "main": [
+        [
+          {
+            "node": "OpenAI (Intent Extraction)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI (Intent Extraction)": {
+      "main": [
+        [
+          {
+            "node": "Google Places API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Places API": {
+      "main": [
+        [
+          {
+            "node": "OpenAI (Ranking)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI (Ranking)": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "versionId": "1.0.0"
+}

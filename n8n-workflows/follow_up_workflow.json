@@ -1,0 +1,197 @@
+{
+  "name": "LocalLens AI - Follow-up Actions",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-action",
+        "options": {}
+      },
+      "name": "Webhook (WhatsApp Actions)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.entry[0].changes[0].value.messages[0].text.body }}",
+              "operation": "equal",
+              "value2": "1️⃣"
+            },
+            {
+              "value1": "={{ $json.body.entry[0].changes[0].value.messages[0].text.body }}",
+              "operation": "equal",
+              "value2": "2️⃣"
+            },
+            {
+              "value1": "={{ $json.body.entry[0].changes[0].value.messages[0].text.body }}",
+              "operation": "equal",
+              "value2": "🔄"
+            }
+          ]
+        }
+      },
+      "name": "Switch Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        450,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v19.0/{{YOUR_PHONE_NUMBER_ID}}/messages",
+        "method": "POST",
+        "authentication": "headerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $node['Webhook (WhatsApp Actions)'].json.body.entry[0].changes[0].value.messages[0].from }}"
+            },
+            {
+              "name": "type",
+              "value": "text"
+            },
+            {
+              "name": "text.body",
+              "value": "Fetching details for Option 1... 🕒"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Send Details Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        650,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v19.0/{{YOUR_PHONE_NUMBER_ID}}/messages",
+        "method": "POST",
+        "authentication": "headerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $node['Webhook (WhatsApp Actions)'].json.body.entry[0].changes[0].value.messages[0].from }}"
+            },
+            {
+              "name": "type",
+              "value": "text"
+            },
+            {
+              "name": "text.body",
+              "value": "Here is the map link for Option 2! 📍\nhttps://maps.google.com/?q=..."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Send Maps Link Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        650,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v19.0/{{YOUR_PHONE_NUMBER_ID}}/messages",
+        "method": "POST",
+        "authentication": "headerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $node['Webhook (WhatsApp Actions)'].json.body.entry[0].changes[0].value.messages[0].from }}"
+            },
+            {
+              "name": "type",
+              "value": "text"
+            },
+            {
+              "name": "text.body",
+              "value": "Sure, what else are you looking for? (e.g., 'Coffee shops near me')"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Send Restart Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        650,
+        600
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook (WhatsApp Actions)": {
+      "main": [
+        [
+          {
+            "node": "Switch Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Action": {
+      "main": [
+        [
+          {
+            "node": "Send Details Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Maps Link Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Restart Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "versionId": "1.0.0"
+}
